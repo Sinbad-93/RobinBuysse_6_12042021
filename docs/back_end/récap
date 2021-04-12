@@ -1,0 +1,15 @@
+après initialisation de git et de npm
+*npm init git init*
+creer .gitignore
+Possibilité de travailler avec nodemon si framework front (relier les localhost front and back)
+installer express *npm install --save express*
+creer server et app
+installer mongoose *npm install --save mongoose*
+creer les modèles pour la base de données
+creer les routes et les controllers
+
+authentification
+creer un processus de validation unique pour eviter les doublons d'identifiants
+*npm install --save mongoose-unique-validator*
+
+
