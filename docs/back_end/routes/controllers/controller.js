@@ -73,6 +73,26 @@ exports.createSauce = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
+exports.likeSauce = (req, res, next) => {
+  const userId = JSON.parse(req.body.userId);
+  const userLike = JSON.parse(req.body.j&quot;aime)
+  delete sauceObject._id;
+  if (userLike === 1){}
+  else if (userLike === 0){}
+  const sauceObject = req.file ?
+    {
+      likes += 1,
+      usersLiked.push(user.email)
+      
+    } : { ...req.body };
+  Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+  sauce.save()
+    .then(() => res.status(201).json({ message: 'Sauce enregistré !'}))
+    .catch(error => res.status(400).json({ error }));
+};
+
+
+
 /*exports.modifySauce = (req, res, next) => {
   const sauce = new Sauce({
     userId: req.body.userId,

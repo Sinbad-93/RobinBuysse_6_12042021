@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const sauceRoutes = require('./routes/routes.js');
 const userRoutes = require('./routes/users');
 const path = require('path');
-
+const bodyParser = require('body-parser');
 const app = express();
+
 mongoose.connect('mongodb+srv://Sinbad:mhZ2lrmMVgn147S0@perso1712.fat9x.mongodb.net/<openC>?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
@@ -17,9 +18,9 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
   });
-  
+app.use(bodyParser.json());  
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('api/sauces', sauceRoutes);
+app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;
