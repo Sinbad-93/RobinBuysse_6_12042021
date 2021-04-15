@@ -1,0 +1,183 @@
+1*********** injection
+mongoDB no sql :
+validation des données avec un middleware ?
+
+2************** piratage session
+
+---> Protégez vos cookies !
+Voici quelques recommandations pour garantir la sécurité des cookies :
+assurez-vous que les cookies sont chiffrés lors de la transmission via HTTPS ;
+ne stockez pas d'informations d'identification en texte clair dans vos cookies ;
+définissez une date d'expiration pour vos cookies-session.
+-implémentez une authentification forte, c’est-à-dire avec plusieurs facteurs d’authentification, 
+comme la validation par SMS ou par mail, par exemple. 
+
+3**************** exposition de données sensibles
+
+Je vous conseille de configurer l'ensemble de votre application web avec HTTPS, 
+qu'elle traite ou non des informations sensibles. En effet, Google marquera tous les sites HTTP comme non sécurisés pour conduire plus de sites à utiliser HTTPS. Avoir un site configuré avec HTTPS augmentera la confiance de vos utilisateurs.
+Pour en savoir plus, vous pouvez visiter la page de recommandations de Google.
+Comment utiliser le protocole TLS pour sécuriser une application ?
+Tout d'abord, obtenez un certificat SSL et ajoutez-le à votre serveur. Ce certificat est nécessaire 
+pour chiffrer les données en cours de transmission.
+Ensuite, codez vos pages avec HTTPS !
+
+
+Il vous suffit d'ajouter un S et vous pouvez maintenant démarrer 
+un serveur HTTPS tout aussi facilement (avec un certificat SSL, bien sûr).
+
+
+Tout à fait ! Parlons maintenant de Cross-Origin Resource Sharing (CORS).
+Votre navigateur fournit une sécurité à vos requêtes GET et POST par défaut. 
+Lorsqu'une demande est faite, elle ne sera autorisée que si elle a la même origine.
+Cela signifie qu'elle doit avoir les mêmes nom de domaine, port, hôtes et schémas. 
+Cette restriction n'est pas toujours utile si les requêtes nécessitent une transmission 
+vers un autre port ou domaine. Lorsque cela se produit, 
+l'application web est exposée à une attaque CSRF.
+
+*Le masquage dynamique des données est un moyen d'appliquer des règles 
+d'anonymisation sur les colonnes de données sensibles. 
+Lorsqu'une demande est faite pour récupérer les données des colonnes masquées, 
+elle n'apparaîtra pas dans sa forme complète. 
+Ces données peuvent également être cachées aux administrateurs 
+de bases de données avec des rôles qui bloquent l'accès aux données sensibles.
+
+MongoDB a la possibilité d'utiliser un module appelé Mongo Mask. 
+Il peut être utilisé comme ceci sur l’application : var mongoMask = require('mongo-mask'). 
+Sur la base de données, 
+MongoDB a des accès en lecture seule qui peuvent être spécifiés dans le code
+
+*Cloner et générer des masques de données utilisant plusieurs bases de données. En utilisant le même schéma, une base de données supplémentaire utilisée pour récupérer des informations peut contenir des données masquées pour les colonnes sensibles déjà présentes.
+
+SQL Server, SQL Clone et SQL Data Generator peuvent être utilisés pour créer 
+une autre base de données avec des données générées pour masquer les données sensibles
+ lors de leur récupération. Contrairement au masquage dynamique des données, 
+ il ne s'agit pas d'un masquage actif. Il s'agit d'une redirection de requête 
+ vers une autre base de 
+données avec des données générées pour remplacer les données sensibles.
+
+4************ entités externes XML/XXE 
+Il existe un moyen de désactiver les entités externes dans tous les langages. 
+Il s'agit généralement d'une balise binaire vrai/faux.
+Des entités XML externes peuvent être utilisées pour révéler des données sensibles, des images et des références de documents enregistrées sur un ordinateur.
+
+Les entités XML externes devraient être désactivées.
+
+5************** Contournement du controle d'accès
+
+Appréhendez la restriction URL
+Les attaques courantes contre le contrôle d'accès se produisent lorsqu'une URL 
+permet de contourner l'authentification. Les pirates informatiques utilisent 
+la connaissance des formats et des modèles pour deviner l'URL des pages privilégiées 
+ui n'ont pas été configurées de manière sécurisée. 
+Pour se protéger contre ce type d'attaque, 
+il est possible de mettre en place une restriction URL.
+
+Au lieu de nommer vos pages cibles avec un sens, utilisez un tableau 
+de valeurs clés qui font référence à vos objets.
+Modifiez les noms par défaut de vos pages web.
+Assurez-vous que toutes les pages ont un contrôle d'authentification.
+Personnalisez vos exceptions et vos codes d'erreur.
+
+6*************** Mauvaises configurations de sécurité (indices en têtes http, code erreur)
+
+
+7*************** Failles XSS
+
+Appliquez la validation des données d'entrée : pour empêcher les attaques communes, il est possible de blacklister certains caractères comme les balises script.
+
+Appliquez la transformation des entrées : vous pouvez encoder toutes vos entrées dans une entité de caractères HTML ou du texte pour qu'il n'exécute aucun script. Il existe des fonctions simples et des bibliothèques qui peuvent vous aider à encoder tout votre HTML et JavaScript.
+
+Configurez vos cookies avec le flag HttpOnly.
+
+Protégez votre application contre une faille CSRF ?
+Exiger la réauthentification pour toutes les demandes des utilisateurs.
+
+Utiliser un jeton unique pour chaque demande.
+
+Utiliser des jetons anti-falsification qui valident le jeton côté client
+ par rapport au jeton côté serveur web.
+Effectuer des recherches sur les bibliothèques CSRF basées sur la sécurité.
+
+8****************** Désérialisation non sécurisée
+
+La désérialisation non sécurisée est la capacité d'un attaquant à changer 
+l'état du code pendant sa conversion en binaire.
+
+La désérialisation non sécurisée peut être évitée en créant 
+des contrôles sur l'état du code.
+Pour empêcher l'accès privilégié non autorisé à l'aide de l'objet désérialisé,
+ une mesure défensive consisterait
+ à valider les données d'entrée et à vérifier la fonctionnalité de l'objet.
+
+9******************** utilisation de composants avec des vulnerabilites (package )
+
+Comment savoir si un des outils que j'utilise présente une vulnérabilité connue ?
+
+Pensez à consulter les bases de données sur le web. La base de données 
+Common Vulnerabilities and Exposures (en anglais), créée par le MITRE, 
+est un excellent outil à utiliser. 
+
+Le MITRE est une organisation à but non lucratif qui 
+effectue des travaux liés à la cybersécurité.
+
+Voici quelques conseils pour vous assurer que votre environnement est sécurisé :
+
+documentez les versions de chaque composant de votre application, 
+y compris le firmware de la carte réseau du serveur ;
+
+examinez vos composants physiques, vos applications, 
+votre système d'exploitation, vos API, vos bibliothèques et 
+les versions des langages utilisées.
+Lors de la conception d'une application web, évaluez les composants présentant des vulnérabilités connues.
+
+Les composants peuvent présenter de nouvelles vulnérabilités 
+tout au long du cycle de vie du produit.
+
+Patchez toujours les zones présentant de nouvelles vulnérabilités.
+
+Votre travail n'est pas terminé après que vous ayez écrit un code sécurisé.
+
+Assurez-vous que les pare-feux et les plateformes sont protégés et configurés de manière à respecter 
+les bonnes pratiques de sécurité.
+
+Connectez-vous avec les administrateurs de bases de données pour vous assurer 
+que la base de données est sécurisée.
+
+10**************** exploitation du manque de monitoring ou surveillance
+
+Savoir qu'il faut tester, c'est bien. Mais quelles sont les techniques de tests ?
+
+Le fuzzing
+Le fuzzing est une technique utilisée pour tester les zones où les données sont entrées sur votre application web. Il teste les entrées aléatoirement pour s'assurer que les techniques de validation appropriées sont utilisées. 
+Le fuzzing va permettre de tester l'injection SQL et les attaques XSS, par exemple !
+
+L’audit de code
+L'audit de code peut être effectué manuellement ou à l'aide d'un outil automatisé. 
+Il implique souvent une analyse ligne par ligne du code source pour trouver 
+les éléments ou fonctions vulnérables.
+
+Ce test garantit que les fonctions vulnérables communes ne sont pas utilisées dans le code. 
+Cela peut permettre de détecter des injections SQL, par exemple.
+
+Bien que votre code puisse réussir un test d'analyse de code, 
+il peut toujours être vulnérable au contrôle d'accès, au piratage de session, 
+aux problèmes de configuration dans le framework et aux algorithmes cryptographiques faibles.
+Découvrez les modèles de menace (Threat Modeling)
+Quelles sont les données que vous devez protéger ?
+
+  Qui exploitera les données ?
+
+  Quelle est la probabilité qu'une vulnérabilité soit exploitée ?
+
+  Quels dommages cette exploitation peut-elle causer ?
+
+  Quelle est votre protection contre cet exploit ?
+
+  e nombreuses organisations, dont l'OWASP, 
+  ont proposé un cycle de vie intégré de la sécurité (SDLC) ou 
+  un cycle de vie de développement logiciel sécurisé (SSDLC). 
+  Il y a encore beaucoup de débats à ce sujet ; cependant, dans 
+  la production d'applications web à grande échelle, 
+  la sécurité sera très probablement intégrée dans 
+  le modèle SDLC déjà utilisé par les entreprises.
