@@ -1,10 +1,8 @@
-const User = require('../models/usersModelPlus');
+const User = require('../models/usersModel');
 const utils = require('../middleware/utils');
-"use strict";
 
-/* vérifier que l'adresse email n'est pas déjà existante dans la base de donnée */
 module.exports = async (req,res, next) => {
-    const numberOfUsers = await User.countDocument();
+    const numberOfUsers = await User.countDocuments();
     if (numberOfUsers === 0) {
         next();
     } else {
