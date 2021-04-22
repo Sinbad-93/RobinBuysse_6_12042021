@@ -4,12 +4,8 @@ Exigences concernant la sécurité :
 **** A FAIRE
 ● l’API doit respecter le RGPD et les standards OWASP ;
 
-***** NORMALEMENT OK, vérifier chiffrer un mot de passe
-● le mot de passe des utilisateurs doit être chiffré ;
-adresse email egalement, tout leur données doivent être masqués 
-(On peut imaginer utiliser des choses comme mongomask ou bien json-mask per exemple)
-
--mettre cookie en http only
+- chiffrer adresse mail ?
+-mettre cookie en http only *ok fait avec express-session
 -variables d'environnement pour id mongodb
 
 **** A FAIRE
@@ -22,21 +18,26 @@ de données ;
 Atlas) doit être faite de telle sorte que le validateur puisse lancer l’application depuis
 sa machine ;
 
-**** CAD ?
-● l’authentification est renforcée sur les routes requises ;
-
-**** A VERIFIER
-● les mots de passe sont stockés de manière sécurisée ;
-
-*****NE RAPPORTE PAS LES ERREURS
-● les adresses mails de la base de données sont uniques et un plugin Mongoose
-approprié est utilisé pour s’assurer de leur caractère unique et rapporter des erreurs
-
-
 Erreurs API
 ****VERIFIER SI GESTION DES ERREURS EST AU MAXIMUM
 Toute erreur doit être renvoyée telle quelle, sans aucune modification ni ajout. Si nécessaire,
 utiliser une nouvelle Erreur().
+
+ ----------------------------------------------------
+*****  OK
+● le mot de passe des utilisateurs doit être chiffré ;
+adresse email masqués 
+(On peut imaginer utiliser des choses comme mongomask ou bien json-mask per exemple)
+
+**** Ok token
+● l’authentification est renforcée sur les routes requises ;
+
+**** oui
+● les mots de passe sont stockés de manière sécurisée ;
+
+***** oui ok
+● les adresses mails de la base de données sont uniques et un plugin Mongoose
+approprié est utilisé pour s’assurer de leur caractère unique et rapporter des erreurs
 
 Routes API
 ******VALIDE

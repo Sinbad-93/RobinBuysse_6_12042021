@@ -2,7 +2,8 @@ const bcrypt = require('bcrypt');
 const User = require('../../models/usersModel');
 const jwt = require('jsonwebtoken');
 const MaskData = require('maskdata');
-
+// variables d'environnement
+require('dotenv').config()
 /* defini comment l'adresse sera masquée dans le champ emailMasked*/
 const maskEmailOptions = {
   maskWith: '*',
@@ -46,7 +47,7 @@ exports.login = (req, res, next) => {
               /*transformer l'id user en token avec une expiration*/
               token: jwt.sign(
                 { userId: user._id },
-                'RANDOM_TOKEN_SECRET',
+                process.env.TOKEN,
                 { expiresIn: '24h' }
               )
             });
