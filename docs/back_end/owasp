@@ -15,6 +15,14 @@ définissez une date d'expiration pour vos cookies-session.
 comme la validation par SMS ou par mail, par exemple. 
 
 3**************** exposition de données sensibles ++++++++++ mask data, https, CORS ok
+utiliser les variables d'environnement pour ne pas donner ses informations de connexion
+npm install dotenv
+process.env.PSEUDO
+n’oubliez pas d’inclure le fichier .env à l’intérieur de  .gitignore 
+si vous allez pousser ce code dans le Github publiquement et 
+également écrire dans la documentation quel type d’API sont nécessaires 
+pour exécuter le projet afin que d’autres utilisateurs puissent 
+créer des comptes sur ces plateformes et obtenir leurs propres clés.
 
 Je vous conseille de configurer l'ensemble de votre application web avec HTTPS, 
 qu'elle traite ou non des informations sensibles. En effet, Google marquera tous les sites HTTP comme non sécurisés pour conduire plus de sites à utiliser HTTPS. Avoir un site configuré avec HTTPS augmentera la confiance de vos utilisateurs.
@@ -74,7 +82,15 @@ une autre base de données avec des données générées pour masquer les donné
  vers une autre base de 
 données avec des données générées pour remplacer les données sensibles.
 
-4************ entités externes XML/XXE 
+4************ entités externes XML/XXE ++++pas concerné car format JSON
+JSON.parser différent de XML parser, sinon au besoin :
+-> turn off processing external entities in your XML parser, that's all.
+The biggest difference is:
+(XML has to be parsed with an XML parser. JSON can be parsed by a standard JavaScript function.
+Why JSON is Better Than XML
+XML is much more difficult to parse than JSON.
+JSON is parsed into a ready-to-use JavaScript object.)
+
 Il existe un moyen de désactiver les entités externes dans tous les langages. 
 Il s'agit généralement d'une balise binaire vrai/faux.
 Des entités XML externes peuvent être utilisées pour révéler des données sensibles, 
@@ -101,6 +117,16 @@ Personnalisez vos exceptions et vos codes d'erreur.
 6*************** Mauvaises configurations de sécurité (indices en têtes http, code erreur)
 EN TETE ----> ROUTE API pré determinée
 CODE ERREUR ? à travailler
+Utiliser le mode strict (ECMAScript5 uniquement, ES6 est en mode script par défaut)
+JavaScript a un certain nombre de fonctionnalités héritées non sûres et dangereuses 
+qui ne doivent pas être utilisées. Afin de supprimer ces fonctionnalités, 
+ES5 a inclus un mode strict pour les développeurs. Avec ce mode, 
+les erreurs qui étaient auparavant silencieuses sont renvoyées. 
+Il aide également les moteurs JavaScript à effectuer des optimisations. 
+En mode strict, une mauvaise syntaxe précédemment acceptée provoque de réelles erreurs. 
+En raison de ces améliorations, vous devez toujours utiliser 
+le mode strict dans votre application. 
+Pour activer le mode strict, il vous suffit d'écrire "use strict";au-dessus de votre code.
 
 7*************** Failles XSS +++++++++++
 
@@ -130,7 +156,13 @@ Utiliser des jetons anti-falsification qui valident le jeton côté client
  par rapport au jeton côté serveur web.
 Effectuer des recherches sur les bibliothèques CSRF basées sur la sécurité.
 
-8****************** Désérialisation non sécurisée
+8****************** Désérialisation non sécurisée ++++++++
+
+// Prevent MITM attack
+var csrf = require('csurf'); with cookie parser()
+Mais si pas d'utilisation de cookie pour l'auth 
+mais plutot JSON web token, pas de soucis
+naturellement bonne defense
 
 La désérialisation non sécurisée est la capacité d'un attaquant à changer 
 l'état du code pendant sa conversion en binaire.
@@ -144,6 +176,14 @@ Pour empêcher l'accès privilégié non autorisé à l'aide de l'objet déséri
 9******************** utilisation de composants avec des vulnerabilites (package )
 
 -----> npm install -g snyk (vérifier fiabilité des packages)
+relié au depot github
+envoi des rapports
+
+npm install morgan
+app.use(morgan('combined'));
+permet de surveiller le comportement des utilisateurs, 
+repère les comportement suspect, envoi un rapport
+
 Comment savoir si un des outils que j'utilise présente une vulnérabilité connue ?
 
 Pensez à consulter les bases de données sur le web. La base de données 
@@ -177,6 +217,9 @@ Connectez-vous avec les administrateurs de bases de données pour vous assurer
 que la base de données est sécurisée.
 
 10**************** exploitation du manque de monitoring ou surveillance
+
+----> Exécutez périodiquement les linters de sécurité:
+Utiliser ESLint pour vérifier la bonne structure du code ?
 
 Savoir qu'il faut tester, c'est bien. Mais quelles sont les techniques de tests ?
 

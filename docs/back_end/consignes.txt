@@ -1,22 +1,29 @@
-Lire la page principale
 
+- VERIFIER BEARER POUR attaque MITM
+- COMPRENDRE DECONNEXION RAFRAICHISSEMENT PAGE
+- CRYPTER MAIL ✓ 
+- LIMITER NOMBRE DE CONNEXION
+- COMMENTER LE CODE 
+- SYNTHETISER LES INFORMATIONS POUR SOUTENANCE
+
+-----------------------------------------------------------------
 Exigences concernant la sécurité :
 **** A FAIRE
 ● l’API doit respecter le RGPD et les standards OWASP ;
 
 - chiffrer adresse mail ?
 -mettre cookie en http only *ok fait avec express-session
--variables d'environnement pour id mongodb
+-variables d'environnement pour id mongodb * ok
 
 **** A FAIRE
 ● 2 types de droits administrateur à la base de données doivent être définis : un accès
 pour supprimer ou modifier des tables, et un accès pour éditer le contenu de la base
-de données ;
+de données ; * ok
 
 ***** A TRAVAILLER
 ● la sécurité de la base de données MongoDB (à partir d’un service tel que MongoDB
 Atlas) doit être faite de telle sorte que le validateur puisse lancer l’application depuis
-sa machine ;
+sa machine ; *ok
 
 Erreurs API
 ****VERIFIER SI GESTION DES ERREURS EST AU MAXIMUM

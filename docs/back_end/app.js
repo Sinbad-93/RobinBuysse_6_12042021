@@ -48,7 +48,7 @@ app.use(helmet.referrerPolicy());
 // empeche les failles xss
 app.use(helmet.xssFilter());
 
-mongoose.connect(process.env.MONGO,
+mongoose.connect(process.env.MONGOGUEST,
   { useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex : true
@@ -59,8 +59,8 @@ mongoose.connect(process.env.MONGO,
 const allowOrigins = ['http://app.exemple.com', 'http://autre.exemple.com'];
 const allOrigins = '*';
 
-
 app.use((req, res, next) => {
+      
       if (allOrigins){res.setHeader('Access-Control-Allow-Origin', '*');}
       // On test si l'entête "Origin" fait partie des origines acceptées
       else if (res.setHeader['origin'] && allowOrigins.includes(res.setHeader['origin'])) {

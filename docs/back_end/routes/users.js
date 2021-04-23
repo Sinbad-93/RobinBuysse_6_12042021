@@ -5,7 +5,6 @@ const userCtrl = require('./controllers/usersCtrl');
 
 const verifyPassword = require('../middleware/verifyPassword');
 const blocAccessOnLoginFailed = require('../middleware/blocAccessOnLoginFailed');
-const disableCaching = require('../middleware/disableCaching');
 const verifyEmail = require('../middleware/verifyEmail');
 
 
