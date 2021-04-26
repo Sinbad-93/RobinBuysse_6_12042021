@@ -4,5 +4,5 @@ Faire fonctionner le projet en local :
 -npm install
 -npm i node-sass@4.14.1
 
-front-end : ng-serve
-back-end : node server ou nodemon server
+*front-end : ng-serve*
+*back-end : node server ou nodemon server*
