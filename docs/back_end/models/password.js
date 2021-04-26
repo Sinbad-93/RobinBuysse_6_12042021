@@ -2,7 +2,7 @@ const passwordValidator = require('password-validator'); /*3K (gzipped: 1.1K)*/
 
 const passwordSchema = new passwordValidator();
 
-/* Validation de la casse pour le mot de passe \\]\\[\\}\\{\\$*/
+/* Validation de la casse pour le mot de passe */
 passwordSchema
 .is().min(8)            /* 8 charr min*/
 .has().uppercase()      /* minuscule*/

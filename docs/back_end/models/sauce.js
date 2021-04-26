@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// schema des sauces pour la base de donnée
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true }, /* identifiant MongoDB du créateur de la sauce*/
   name: { type: String, required: true },/*nom de la sauce*/
@@ -10,8 +11,8 @@ const sauceSchema = mongoose.Schema({
   heat: { type: Number, required: true },/*note de la sauce*/
   likes: { type: Number, required: true, default : 0 },/*nombres utilisateurs qui aiment*/
   dislikes: { type: Number, required: true, default : 0 },/*nombres utilisateurs qui n'aiment pas*/
-  usersLiked: { type: [String], required: true },
-  usersDisliked: { type: [String], required: true },
+  usersLiked: { type: [String], required: true }, // auteurs des likes
+  usersDisliked: { type: [String], required: true }, // auteurs des dislikes
 });
 
 module.exports = mongoose.model('Sauce', sauceSchema);

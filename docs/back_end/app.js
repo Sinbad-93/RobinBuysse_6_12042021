@@ -1,9 +1,16 @@
+/* initialiser les packages et connecter les fichiers*/
+// module express
 const express = require('express');
+// mongodb et schemas
 const mongoose = require('mongoose');
+// fichiers
 const sauceRoutes = require('./routes/routes.js');
 const userRoutes = require('./routes/users');
+
 const path = require('path');
+// permet de lire le format JSON
 const bodyParser = require('body-parser');
+// création de l'app express
 const app = express();
 // variables d'environnement
 require('dotenv').config()
@@ -56,7 +63,9 @@ mongoose.connect(process.env.MONGOGUEST,
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch((error) => console.log('Connexion à MongoDB échouée !' + error));
 
+// filter les origines
 const allowOrigins = ['http://app.exemple.com', 'http://autre.exemple.com'];
+// ici on accepte toutes origines
 const allOrigins = '*';
 
 app.use((req, res, next) => {
@@ -83,15 +92,6 @@ app.use((req, res, next) => {
     next();
   });
 
-/* cookie en http only, sécurise pour empêcher d'être modifié par un tier
-app.use(session({
-  secret : "s3Cur3",
-  cookie: {
-    secure : true,
-    httpOnly : true,
-    domain: 'http://localhost:3000',
-  }
-}));*/
 app.set('trust proxy', 1) // trust first proxy for express session
 app.use(session({
   name : 'Session456587',

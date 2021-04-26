@@ -1,5 +1,7 @@
+//module pour autoriser et controller le téléchargement d'image
 const multer = require('multer');
 /*GESTION DES IMAGES*/
+// formats acceptés
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',
@@ -7,9 +9,11 @@ const MIME_TYPES = {
 };
 
 const storage = multer.diskStorage({
+  // indiquer le path
   destination: (req, file, callback) => {
     callback(null, 'images');
   },
+  // indiquer le rename
   filename: (req, file, callback) => {
     const name = file.originalname.split(' ').join('_');
     const extension = MIME_TYPES[file.mimetype];
