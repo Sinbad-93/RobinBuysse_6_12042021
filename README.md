@@ -6,6 +6,7 @@ cd docs/front_end
 npm install
 npm i node-sass@4.14.1
 ng serve
+(wait few minuts, compilation need time)
 
 open second terminal : 
 cd docs/back_end
