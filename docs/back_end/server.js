@@ -1,5 +1,13 @@
 /* initialiser le serveur*/
-const http = require('http');
+var http = require('http');
+
+// creation de certificat SSL
+/*var https = require('https');
+var fs = require('fs');
+var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
+var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};*/
+
 /* séparer la logique avec un fichier app pour express*/
 const app = require('./app');
 
@@ -40,8 +48,10 @@ const errorHandler = error => {
       throw error;
   }
 };
+
 /* creation du serveur avec express*/
 const server = http.createServer(app);
+//var httpsServer = https.createServer(credentials, app);
 
 /*écouteur d'erreur et d'evenement*/
 server.on('error', errorHandler);
@@ -52,3 +62,4 @@ server.on('listening', () => {
 });
 /* connexion du serveur */
 server.listen(port);
+//httpsServer.listen(8443);

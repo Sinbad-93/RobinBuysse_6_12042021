@@ -20,37 +20,37 @@ var session = require('express-session');
 const mongoSanitize = require('express-mongo-sanitize');
 // package avec plusieurs dependances de protection
 const helmet = require("helmet");
-
 /*app.use(helmet());*/
 // ...is equivalent to this:
 
 /*définit l’en-tête Content-Security-Policy pour la protection 
 contre les attaques de type cross-site scripting et autres injections intersites.*/
 app.use(helmet.contentSecurityPolicy());
-/*helmet.dnsPrefetchControl sets the X-DNS-Prefetch-Control header 
-to help control DNS prefetching, 
-which can improve user privacy at the expense of performance */
+/*helmet.dnsPrefetchControl définit l'en-tête X-DNS-Prefetch-Control
+pour contrôler la prélecture DNS, pour améliorer la confidentialité des utilisateurs */
 app.use(helmet.dnsPrefetchControl());
-//helmet.expectCt sets the Expect-CT header which helps mitigate misissued SSL certificates.
+//helmet.expectCt qui aide à atténuer défauts d'emission des certificats SSL.
 app.use(helmet.expectCt());
 // définit l’en-tête X-Frame-Options pour fournir une protection clickjacking.
 app.use(helmet.frameguard());
-//supprime l’en-tête X-Powered-By.
-app.use(helmet.hidePoweredBy());
+
+//supprime l’en-tête X-Powered-By. (PHP)
+//app.use(helmet.hidePoweredBy());
+
 /* définit l’en-tête Strict-Transport-Security qui 
 impose des connexions (HTTP sur SSL/TLS) sécurisées au serveur.*/
 app.use(helmet.hsts());
 //définit X-Download-Options pour IE8+
 app.use(helmet.ieNoOpen());
 /*définit X-Content-Type-Options pour protéger les navigateurs 
-du reniflage du code MIME d’une réponse à partir du type de contenu déclaré.*/
+du reniflage du code MIME (Multipurpose Internet Mail Extensions ).*/
 app.use(helmet.noSniff());
 /*helmet.permittedCrossDomainPolicies sets the X-Permitted-Cross-Domain-Policies 
-header, which tells some clients (mostly Adobe products) 
-your domain's policy for loading cross-domain content */
+header, indique à certains clients (principalement des produits Adobe)
+la politique de votre domaine pour le chargement de contenu interdomaine */
 app.use(helmet.permittedCrossDomainPolicies());
 /*helmet.referrerPolicy sets the Referrer-Policy header 
-which controls what information is set in the Referer header.*/
+qui contrôle quelles informations sont définies dans l'en-tête Referer.*/
 app.use(helmet.referrerPolicy());
 // empeche les failles xss
 app.use(helmet.xssFilter());
@@ -106,7 +106,7 @@ app.use(session({
 }));
 
 /* ou plutot ? app.use(express.json());*/
-app.use(bodyParser.json());
+app.use(express.json());
 // To remove suspected xss data, use:
 app.use(mongoSanitize());  
 app.use('/images', express.static(path.join(__dirname, 'images')));
