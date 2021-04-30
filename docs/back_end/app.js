@@ -3,21 +3,25 @@
 const express = require('express');
 // mongodb et schemas
 const mongoose = require('mongoose');
-// fichiers
+// fichiers pour nos routes
 const sauceRoutes = require('./routes/routes.js');
 const userRoutes = require('./routes/users');
-
+// module intégré, utilisé ici pour accéder à /images
 const path = require('path');
-// permet de lire le format JSON
-const bodyParser = require('body-parser');
+
+// permet de lire le format JSON, pas nécéssaire, maintenant integré avec express
+// const bodyParser = require('body-parser');
+
 // création de l'app express
 const app = express();
 // variables d'environnement
 require('dotenv').config()
 // module express permettant de sécuriser les cookies et de creer des noms de cookies uniques
 var session = require('express-session'); 
-// permet d'empecher les failles xss
+
+// permet d'empecher les failles no SQL
 const mongoSanitize = require('express-mongo-sanitize');
+
 // package avec plusieurs dependances de protection
 const helmet = require("helmet");
 /*app.use(helmet());*/
@@ -70,7 +74,7 @@ const allOrigins = '*';
 
 app.use((req, res, next) => {
       
-      if (allOrigins){res.setHeader('Access-Control-Allow-Origin', '*');}
+      if (allOrigins){res.setHeader('Access-Control-Allow-Origin', allOrigins);}
       // On test si l'entête "Origin" fait partie des origines acceptées
       else if (res.setHeader['origin'] && allowOrigins.includes(res.setHeader['origin'])) {
         /*Si oui alors on renseigne "Access-Control-Allow-Origin" 
@@ -92,6 +96,7 @@ app.use((req, res, next) => {
     next();
   });
 
+// configure cookie, in particular http only
 app.set('trust proxy', 1) // trust first proxy for express session
 app.use(session({
   name : 'Session456587',
@@ -105,10 +110,10 @@ app.use(session({
   ephemeral: true,// delete this cookie while browser close
 }));
 
-/* ou plutot ? app.use(express.json());*/
 app.use(express.json());
 // To remove suspected xss data, use:
-app.use(mongoSanitize());  
+app.use(mongoSanitize()); 
+
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);

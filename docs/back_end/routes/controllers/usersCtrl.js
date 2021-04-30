@@ -7,7 +7,9 @@ const jwt = require('jsonwebtoken');
 const MaskData = require('maskdata');
 // chemin de fichiers
 const User = require('../../models/usersModel');
-const utils = require('../../middleware/utils');
+
+const crypto = require('../../middleware/crypto');
+
 const ipAddress = require('../../models/ip');
 // variables d'environnement
 require('dotenv').config();
@@ -21,16 +23,21 @@ const maskEmailOptions = {
   maxMaskedCharactersAfterAtTheRate : 10
 
 };
+
+
 // controller pour l'inscription
 exports.signup = (req, res, next) => {
     //console.log(req.body.email);
     bcrypt.hash(req.body.password, 10)/* saler le password 10 fois*/
       .then(hash => {
+        /* notre utilisateur provient du model UsersModel, 
+        si le format n'est pas respecté il y aura une erreur,
+        si l'email existe dejà dans la base de donnée on aura une erreur graçe à uniqueValidator */
         const user = new User({
-          // masquer l'email
-          email: MaskData.maskEmail2(req.body.email, maskEmailOptions),
-          // crypter une donnée pour qu'elle soit illisbile base donnée (entrainement)
-          cryptedInfos : utils.encrypt(req.body.email),
+          // crypter email pour qu'il soit illisbile base donnée l'email
+          email : crypto.encrypt(req.body.email),
+          // masquer une donnée pour qu'elle soit partiellement illisbile
+          masquedInfo: MaskData.maskEmail2(req.body.email, maskEmailOptions),
           // crypt + hash mdp
           password: hash
         });
@@ -41,18 +48,20 @@ exports.signup = (req, res, next) => {
       .catch(error => res.status(500).json({ error }));
   };
 
-
 exports.login = (req, res, next) => {
-  // chercher le mail masqué dans la base données lors de la connexion
-    User.findOne({ email : MaskData.maskEmail2(req.body.email, maskEmailOptions) })
+  // crypter l'email
+  const userCrypt = crypto.encrypt(req.body.email);
+  console.log(crypto.decrypt(userCrypt));
+  // On compare l'email crypté de la requete avec celui de mongo DB
+  User.findOne({ email: userCrypt })
       .then(user => {
         if (!user) {
           console.log('introuvable');
           return res.status(401).json({ error: 'Utilisateur non trouvé !' });
         }
-        // récupération d'informations crypté, par exemple pour afficher sur la page profil
-        const showInfos = utils.decrypt(user.cryptedInfos);
-        console.log('RECUPERATION DES INFORMATIONS CRYPTES : ' + showInfos);
+        // récupération d'informations masqués, par exemple pour afficher sur la page profil
+        const showInfos = user.masquedInfo;
+        console.log('RECUPERATION DES INFORMATIONS MASQUES : ' + showInfos);
         // vérifier le mdp
         bcrypt.compare(req.body.password, user.password)
           .then(valid => {
@@ -156,3 +165,7 @@ exports.stopConnection = (req,res, next) => {
 
     next();
   }
+
+// TEST
+const testDudecryptage = crypto.encrypt('testdudecryptage@exemple.fr');
+console.log(crypto.decrypt(testDudecryptage));

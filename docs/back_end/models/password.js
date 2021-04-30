@@ -9,8 +9,9 @@ passwordSchema
 .has().lowercase()      /* majuscule*/
 .has().digits()         /* nombre*/
 .has().not().spaces()
-/* empecher une partie du language javascript [] {} $ * = == === */
-.is().not(/===|==?|[\$\*\[\]\{\}]/) 
+/* empecher une partie du language javascript < > [] {} $ * = == === */
+// empêche faille XSS ou no SQL
+.is().not(/===|==?|[\$\*\[\]\{\}\<\>]/) 
 .is().not().oneOf(['Passw0rd', 'Password123']);
 
 

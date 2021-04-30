@@ -1,17 +1,13 @@
 /* initialiser le serveur*/
 var http = require('http');
 
-// creation de certificat SSL
-/*var https = require('https');
-var fs = require('fs');
-var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
-var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
-var credentials = {key: privateKey, cert: certificate};*/
+// pour https voir bas de page
 
 /* séparer la logique avec un fichier app pour express*/
 const app = require('./app');
 
-/*gestion du port d'écoute avec parseInt pour traduire chaine carrac en int*/
+/*gestion du port d'écoute avec parseInt 
+pour traduire chaine carrac en int*/
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -24,10 +20,12 @@ const normalizePort = val => {
   return false;
 };
 
+// par defaut le port notifié dans .env, sinon 3000
 const port = normalizePort(process.env.PORT || '3000');
 
-
+// nommer paramètre
 app.set('port', port);
+
 /* gestion des erreurs */
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
@@ -62,4 +60,15 @@ server.on('listening', () => {
 });
 /* connexion du serveur */
 server.listen(port);
+
 //httpsServer.listen(8443);
+
+
+//-------------------------------------------------
+/* creation de certificat SSL nécéssite de creer un certificat et une clef,
+certains hébérgeur propose le https comme add-on gratuit (autre moyen de faire) */
+/*var https = require('https');
+var fs = require('fs');
+var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
+var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};*/
