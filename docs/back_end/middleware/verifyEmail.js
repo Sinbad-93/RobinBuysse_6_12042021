@@ -1,4 +1,4 @@
-// module de validation de string (et "sanitizers") ici utilisé pour la validation email 
+// module de validation de string (et "sanitizers") ici utilisé pour la validation email
 const emailSchema = require("validator");
 
 /*possibilité de blacklister des carractères dans l'input mail graçe à validator
@@ -7,7 +7,7 @@ const emailSchema = require("validator");
 module.exports = (req, res, next) => {
   //BLACKLISTER SI BESOIN, ici $ en exemple :
   /*req.body.email = emailSchema.blacklist(req.body.email, '/\$/');*/
-  
+
   // logique validation email format controler par validator
   if (!emailSchema.isEmail(req.body.email)) {
     return res.status(400).json({

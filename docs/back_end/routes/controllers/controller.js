@@ -1,40 +1,34 @@
-const Sauce = require('../../models/sauce.js');
+const Sauce = require("../../models/sauce.js");
 // module pour autoriser l'app acceder et modifier contenu de nos dossiers (suppression image)
-const fs = require('fs'); /*file system*/
+const fs = require("fs"); /*file system*/
 
 // requete GET pour toutes les sauces
 exports.getAllSauces = (req, res, next) => {
-    Sauce.find().then(
-      (sauces) => {
-        res.status(200).json(sauces);
-      }
-    ).catch(
-      (error) => {
-        res.status(400).json({
-          error: error
-        });
-      }
-    );
-  };
-
-  // requete GET pour une sauce
-exports.getOneSauce = (req, res, next) => {
-  Sauce.findOne({
-    _id: req.params.id
-  }).then(
-    (sauce) => {
-      res.status(200).json(sauce);
-    }
-  ).catch(
-    (error) => {
-      res.status(404).json({
-        error: error
+  Sauce.find()
+    .then((sauces) => {
+      res.status(200).json(sauces);
+    })
+    .catch((error) => {
+      res.status(400).json({
+        error: error,
       });
-    }
-  );
+    });
 };
 
-
+// requete GET pour une sauce
+exports.getOneSauce = (req, res, next) => {
+  Sauce.findOne({
+    _id: req.params.id,
+  })
+    .then((sauce) => {
+      res.status(200).json(sauce);
+    })
+    .catch((error) => {
+      res.status(404).json({
+        error: error,
+      });
+    });
+};
 
 // requete POST pour une sauce
 exports.createSauce = (req, res, next) => {
@@ -42,16 +36,19 @@ exports.createSauce = (req, res, next) => {
   delete sauceObject._id;
   const sauce = new Sauce({
     ...sauceObject,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`,
   });
-  sauce.save()
-    .then(() => res.status(201).json({ message: 'Sauce enregistré !'}))
-    .catch(error => res.status(400).json({ error }));
+  sauce
+    .save()
+    .then(() => res.status(201).json({ message: "Sauce enregistré !" }))
+    .catch((error) => res.status(400).json({ error }));
 };
 
 // requete POST pour le like ou dislike d'une sauce
 exports.likeSauce = (req, res, next) => {
- /*console.log( 'REQUETE:'+'-id sauce = '+req.params.id );
+  /*console.log( 'REQUETE:'+'-id sauce = '+req.params.id );
   console.log('-like value = '+ req.body.like,'-id user = ' + req.body.userId );*/
   /* La requete est formaté par le front end, trois requete possible :
   1 LIKE -1 UNLIKE 0 ANNULATION DU LIKE OU UNLIKE */
@@ -59,9 +56,10 @@ exports.likeSauce = (req, res, next) => {
   /*console.log(thumbClick);*/
   // LIKE
   if (thumbClick.like === 1) {
-    Sauce.updateOne({ _id /*retrouver l'id crée par Mongo DB*/: req.params.id },
-      {/*Mongo DB operators*/
-        $inc: { likes: +1 },
+    Sauce.updateOne(
+      { _id /*retrouver l'id crée par Mongo DB*/: req.params.id },
+      {
+        /*Mongo DB operators*/ $inc: { likes: +1 },
         // enregistrer quel utilisateur a liké
         $push: { usersLiked: req.body.userId },
       }
@@ -69,7 +67,7 @@ exports.likeSauce = (req, res, next) => {
       .then(() => res.status(200).json({ message: "like !" }))
       .catch((error) => res.status(400).json({ error }));
 
-  // UNLIKE
+    // UNLIKE
   } else if (thumbClick.like === -1) {
     Sauce.updateOne(
       { _id: req.params.id },
@@ -81,8 +79,8 @@ exports.likeSauce = (req, res, next) => {
     )
       .then(() => res.status(200).json({ message: "unlike" }))
       .catch((error) => res.status(400).json({ error }));
-  // CANCEL LIKE OR UNLIKE
-  } else if ((thumbClick.like === 0)) {
+    // CANCEL LIKE OR UNLIKE
+  } else if (thumbClick.like === 0) {
     Sauce.findOne({ _id: req.params.id })
       .then((sauce) => {
         /*si l'utilisateur l'avait like*/
@@ -92,12 +90,12 @@ exports.likeSauce = (req, res, next) => {
             {
               // retirer le like et la trace de son auteur
               $inc: { likes: -1 },
-              $pull: { usersLiked: req.body.userId }
+              $pull: { usersLiked: req.body.userId },
             }
           )
             .then(() => res.status(200).json({ message: "not like anymore !" }))
-            .catch((error) => res.status(400).json({ error }));    
-            /*au contraire si l'utilisateur avait unlike*/
+            .catch((error) => res.status(400).json({ error }));
+          /*au contraire si l'utilisateur avait unlike*/
         } else if (sauce.usersDisliked.includes(req.body.userId)) {
           Sauce.updateOne(
             { _id: req.params.id },
@@ -119,28 +117,34 @@ exports.likeSauce = (req, res, next) => {
 
 // requete PUT pour les informations et image concernant la sauce
 exports.modifySauce = (req, res, next) => {
-  const sauceObject = req.file ?
-    {
-      ...JSON.parse(req.body.sauce),
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    } : { ...req.body };
-  Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
-    .catch(error => res.status(400).json({ error }));
+  const sauceObject = req.file
+    ? {
+        ...JSON.parse(req.body.sauce),
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : { ...req.body };
+  Sauce.updateOne(
+    { _id: req.params.id },
+    { ...sauceObject, _id: req.params.id }
+  )
+    .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
+    .catch((error) => res.status(400).json({ error }));
 };
 
 // requete DELETE pour supprimer une sauce
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
-    .then(sauce => {
-      const filename = sauce.imageUrl.split('/images/')[1];
+    .then((sauce) => {
+      const filename = sauce.imageUrl.split("/images/")[1];
       fs.unlink(`images/${filename}`, () => {
         Sauce.deleteOne({ _id: req.params.id })
-          .then(() => res.status(200).json({ message: 'Sauce supprimée !'}))
-          .catch(error => res.status(400).json({ error }));
+          .then(() => res.status(200).json({ message: "Sauce supprimée !" }))
+          .catch((error) => res.status(400).json({ error }));
       });
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch((error) => res.status(500).json({ error }));
 };
 
 //-------------------- AUTRE METHODES LEGEREMENT DIFFERENTES, MOINS SYNTHETIQUES------------
