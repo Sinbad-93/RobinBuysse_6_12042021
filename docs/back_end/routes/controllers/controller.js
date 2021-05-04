@@ -126,6 +126,7 @@ exports.modifySauce = (req, res, next) => {
       }
     : { ...req.body };
   Sauce.updateOne(
+    //supprmier image à faire
     { _id: req.params.id },
     { ...sauceObject, _id: req.params.id }
   )

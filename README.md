@@ -13,3 +13,11 @@ cd docs/back_end
 npm install
 node server //ou nodemon server
 
+Configurer l'environnement :
+creer un fichier .env et ajouter les informations :
+PORT=*3000*
+CRYPTO=*creer une clef secrete*
+SECRET_KEY =*creer une clef secrete*
+AUTH=true
+MONGOGUEST=*chemin mongo db*
+

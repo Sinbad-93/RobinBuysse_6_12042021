@@ -2,6 +2,9 @@
 const multer = require("multer");
 /*GESTION DES IMAGES*/
 // formats acceptés
+
+// bounce attaque DDOS
+//controler taille image à faire
 const MIME_TYPES = {
   "image/jpg": "jpg",
   "image/jpeg": "jpg",

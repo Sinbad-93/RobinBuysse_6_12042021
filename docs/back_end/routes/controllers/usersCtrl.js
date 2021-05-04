@@ -86,7 +86,7 @@ exports.login = (req, res, next) => {
 /* ci dessous module permettant de récupérer l'adresse ip, ici on ne peut pas l'utiliser 
 en localhost, on va donc simuler le travail sur l'ip en utilisant l'adresse mail*/
 // const userIP = require('user-ip');
-
+//express-rate-limit
 // date du jour
 var today = new Date();
 /*console.log(today.toString() ,today.getHours(),today.getMinutes(),
