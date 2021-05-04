@@ -12,4 +12,4 @@ open second terminal :
 cd docs/back_end
 npm install
 node server //ou nodemon server
->>>>>>> 9769cc771a91d50da838116d02d085cd34591dc5
+
