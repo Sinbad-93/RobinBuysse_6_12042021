@@ -125,13 +125,40 @@ exports.modifySauce = (req, res, next) => {
         }`,
       }
     : { ...req.body };
-  Sauce.updateOne(
-    //supprmier image à faire
-    { _id: req.params.id },
-    { ...sauceObject, _id: req.params.id }
-  )
-    .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
-    .catch((error) => res.status(400).json({ error }));
+  //console.log(sauceObject);
+  // si l'image est modifiée -> imageURL apparaitra dans la requête
+  // donc si imageUrl existe dans la requete :
+  if (sauceObject.imageUrl) {
+    //console.log(sauceObject.imageUrl);
+    Sauce.findOne({
+      _id: req.params.id,
+    }).then((sauce) => {
+      //console.log(sauce.imageUrl);
+      const filename = sauce.imageUrl.split("/images/")[1];
+      //Alors supprimer l'ancienne image
+      fs.unlink(`images/${filename}`, () => {
+        Sauce.updateOne(
+          { _id: req.params.id },
+          { ...sauceObject, _id: req.params.id }
+        )
+          .then(() =>
+            res
+              .status(200)
+              .json({ message: "image remplacée, Sauce modifiée !" })
+          )
+          .catch((error) => res.status(400).json({ error }));
+      });
+    });
+  } // si imageUrl n'existe dans la requete, pas de modification qui concerne l'image :
+    else {
+    Sauce.updateOne(
+      //supprmier image à faire
+      { _id: req.params.id },
+      { ...sauceObject, _id: req.params.id } //console.log(imageUrl)
+    )
+      .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
+      .catch((error) => res.status(400).json({ error }));
+  }
 };
 
 // requete DELETE pour supprimer une sauce
