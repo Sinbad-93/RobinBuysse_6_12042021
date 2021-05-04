@@ -156,7 +156,8 @@ exports.controlIp = (req, res, next) => {
               });
               //plus de 5 min, remettre compteur à zéro
             } else {
-              console.log("reinitialisation temps attendu 5 min "),
+              console.log("reinitialisation temps attendu 5 min ");
+              console.log(today.getHours() + today.getMinutes());
                 (reinitializeCount = 1);
             }
             // un autre jour, remettre compteur à zéro
